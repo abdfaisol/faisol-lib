@@ -113,7 +113,7 @@ export const TypeInput: React.FC<any> = ({
               fm.render();
 
               if (typeof onChange === "function") {
-                onChange(fm.data[name]);
+                onChange(ev.currentTarget.value);
               }
             }}
           />
@@ -140,7 +140,7 @@ export const TypeInput: React.FC<any> = ({
               fm.data[name] = value;
               fm.render();
               if (typeof onChange === "function") {
-                onChange(fm.data[name]);
+                onChange(value);
               }
             }}
           />
@@ -163,7 +163,7 @@ export const TypeInput: React.FC<any> = ({
               fm.data[name] = getNumber(e);
               fm.render();
               if (typeof onChange === "function") {
-                onChange(fm.data[name]);
+                onChange(getNumber(e));
               }
             }}
           />
@@ -180,7 +180,7 @@ export const TypeInput: React.FC<any> = ({
                 fm.data[name] = val;
                 fm.render();
                 if (typeof onChange === "function") {
-                  onChange(fm.data[name]);
+                  onChange(val);
                 }
               }}
               onOpen={() => {
@@ -237,7 +237,7 @@ export const TypeInput: React.FC<any> = ({
                 : null;
               fm.render();
               if (typeof onChange === "function") {
-                onChange(fm.data[name]);
+                onChange(value?.startDate ? new Date(value?.startDate) : null);
               }
             }}
           />
@@ -290,7 +290,7 @@ export const TypeInput: React.FC<any> = ({
                 );
                 fm.render();
                 if (typeof onChange === "function") {
-                  onChange(fm.data[name]);
+                  onChange(convertionCurrencyNumber(formatCurrency(rawValue)));
                 }
                 input.value = formatCurrency(fm.data[name]);
                 input.render();
@@ -340,7 +340,7 @@ export const TypeInput: React.FC<any> = ({
               fm.data[name] = ev.currentTarget.value;
               fm.render();
               if (typeof onChange === "function") {
-                onChange(fm.data[name]);
+                onChange(ev.currentTarget.value);
               }
             }}
           />
