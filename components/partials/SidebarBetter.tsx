@@ -81,6 +81,7 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
   }, []);
   useEffect(() => {
     const run = async () => {
+      console.log("NOTIFICATION COUNT");
       const count: any = await apix({
         port: "notification",
         value: "data.data",
