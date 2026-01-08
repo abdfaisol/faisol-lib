@@ -121,7 +121,7 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
         }
       };
     };
-    run();
+    // run();
   }, []);
   const isChildActive = (items: TreeMenuItem[]): boolean => {
     return items.some((item) => {

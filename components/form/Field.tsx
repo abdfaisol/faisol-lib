@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { FieldCheckbox } from "./field/TypeCheckbox";
+import { FieldCheckboxYN } from "./field/TypeCheckboxYN";
 import { TypeDropdown } from "./field/TypeDropdown";
 import { TypeInput } from "./field/TypeInput";
 import { TypeUpload } from "./field/TypeUpload";
@@ -24,10 +25,12 @@ export interface FieldProps {
   onLoad?: (params?: any) => Promise<any> | any;
   onCount?: (param?: any) => Promise<any> | any;
   onDelete?: (item: any) => Promise<any> | any;
+  labelSingleCheckbox?: string;
   type?:
     | "rating"
     | "color"
     | "single-checkbox"
+    | "checkbox-yn"
     | "radio"
     | "checkbox"
     | "upload"
@@ -112,6 +115,7 @@ export const Field: React.FC<FieldProps> = ({
   isDebounce = false,
   valueChecked,
   mode,
+  labelSingleCheckbox,
 }) => {
   let result = null;
   const field = useLocal({
@@ -252,6 +256,7 @@ export const Field: React.FC<FieldProps> = ({
                 "rating",
                 "color",
                 "single-checkbox",
+                "checkbox-yn",
                 "radio",
                 "checkbox",
                 "multi-upload",
@@ -451,6 +456,20 @@ export const Field: React.FC<FieldProps> = ({
                   className={className}
                   onChange={onChange}
                   mode="single"
+                />
+              </>
+            ) : ["checkbox-yn"].includes(type) ? (
+              <>
+                <FieldCheckboxYN
+                  fm={fm}
+                  fields={initField}
+                  name={name}
+                  onLoad={onLoad}
+                  placeholder={placeholder}
+                  disabled={is_disable}
+                  className={className}
+                  onChange={onChange}
+                  labelSingleCheckbox={labelSingleCheckbox || "Active"}
                 />
               </>
             ) : ["richtext"].includes(type) ? (

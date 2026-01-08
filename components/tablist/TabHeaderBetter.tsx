@@ -64,8 +64,8 @@ export const TabHeaderBetter: React.FC<any> = ({
                   className={cx(
                     "p-1.5 px-4  border text-sm text-gray-500 border-none mr-0 rounded-none focus-visible:ring-0  data-[state=active]:ring-0 transition-none bg-card-layer data-[state=active]:bg-white  data-[state=active]:text-primary data-[state=active]:shadow-none data-[state=active]:border-none",
                     idx === 0
-                      ? "data-[state=active]:slanted-edge data-[state=active]:pr-8 rounded-tl-sm"
-                      : "data-[state=active]:parallelogram pr-8 data-[state=active]:pl-8",
+                      ? "slanted-edge data-[state=active]:pr-8 rounded-tl-sm"
+                      : "parallelogram pr-8 data-[state=active]:pl-8",
                     !idx ? "" : idx++ === local.data.length ? "" : ""
                   )}
                   key={onValue(e)}
