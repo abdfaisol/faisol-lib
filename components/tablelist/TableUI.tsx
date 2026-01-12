@@ -209,7 +209,7 @@ export const TableUI = <T extends object>({
                   <iframe
                     src={`https://ai.avolut.com/embed?projectId=${
                       aiProjectId || ""
-                    }&embedToken=${aiEmbedToken || ""}${`&userId=${get_user(
+                    }&embedToken=${aiEmbedToken || ""}${`&uid=${get_user(
                       "app_key"
                     )}`}`}
                     className="w-full h-full"
