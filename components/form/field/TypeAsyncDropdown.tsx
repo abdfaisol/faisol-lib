@@ -23,7 +23,7 @@ export const TypeAsyncDropdown: React.FC<any> = ({
   pagination = true,
   search = "api",
   required = false,
-  autoRefresh = false,
+  autoRefresh = true,
 }) => {
   const [cacheUniq, setCacheUniq] = useState(0);
   const [open, setOpen] = useState(false as boolean);
@@ -125,7 +125,7 @@ export const TypeAsyncDropdown: React.FC<any> = ({
           }
         }
       }, 200),
-    []
+    [onLoad, pagination, search, getLabel, getValue]
   );
   const loadOptions: any = async (
     searchQuery: any,

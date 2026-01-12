@@ -1,6 +1,5 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
-import { Table } from "flowbite-react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { useLocal } from "@/lib/utils/use-local";
 import { init_column } from "./lib/column";
@@ -8,8 +7,6 @@ import { toast } from "sonner";
 import { Loader2, Sticker } from "lucide-react";
 import { getNumber } from "@/lib/utils/getNumber";
 import { formatMoney } from "@/lib/components/form/field/TypeInput";
-import "react-resizable/css/styles.css";
-import { Resizable } from "react-resizable";
 import get from "lodash.get";
 export const TableEditBetter: React.FC<any> = ({
   name,
@@ -200,7 +197,7 @@ export const TableEditBetter: React.FC<any> = ({
           <div className="overflow-auto relative flex-grow flex-row">
             <div className="tbl absolute top-0 left-0 inline-block flex-grow w-full h-full align-middle">
               <div className="relative">
-                <Table
+                <table
                   className={cx(
                     "min-w-full divide-y divide-gray-200 text-black",
                     css`
@@ -223,14 +220,6 @@ export const TableEditBetter: React.FC<any> = ({
                         overflow: hidden;
                         border-top-right-radius: 10px; /* Sudut kiri atas */
                         border-bottom-right-radius: 10px;
-                      }
-                      .react-resizable-handle {
-                        cursor: e-resize;
-                        width: 2px;
-                        height: 100%;
-                        background: #313678;
-                      }
-                      .react-resizable {
                       }
                     `,
                     checkbox &&
@@ -344,7 +333,7 @@ export const TableEditBetter: React.FC<any> = ({
                       );
                     })}
                   </tbody>
-                </Table>
+                </table>
               </div>
             </div>
             {!local?.data?.length && (
@@ -371,58 +360,67 @@ export const TableEditBetter: React.FC<any> = ({
 };
 const HeaderColumn: FC<any> = ({ children, width, height, onResize, col }) => {
   const [isResizing, setIsResizing] = useState(false);
+  const [currentWidth, setCurrentWidth] = useState(width);
 
-  const handleResizeStart = () => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     setIsResizing(true);
-  };
+    e.preventDefault();
 
-  const handleResizeStop = () => {
-    setIsResizing(false);
+    const startX = e.clientX;
+    const startWidth = currentWidth;
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      const newWidth = startWidth + (moveEvent.clientX - startX);
+      setCurrentWidth(newWidth);
+      onResize(e, { size: { width: newWidth, height } });
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
   };
 
   return (
-    <Resizable
-      onResizeStart={handleResizeStart}
-      onResizeStop={handleResizeStop}
-      width={width}
-      height={height}
-      onResize={onResize}
+    <th
+      className="table-header-tbl capitalize relative"
+      style={{ width: currentWidth }}
     >
-      <th
-        className="table-header-tbl capitalize relative"
-        style={{ width: col.width }}
-      >
-        {children}
-        <div
-          className={cx(
+      {children}
+      <div
+        onMouseDown={handleMouseDown}
+        className={cx(
+          css`
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: transparent;
+            cursor: e-resize;
+            transition: background 0.2s ease;
+
+            &:hover {
+              background: #4a90e2; /* Warna biru saat hover */
+            }
+
+            &:active {
+              background: #357abd; /* Warna biru lebih gelap saat di-resize */
+            }
+
+            ${isResizing &&
             css`
-              position: absolute;
-              right: 0;
-              top: 0;
-              height: 100%;
-              width: 5px;
-              background: transparent;
-              cursor: e-resize;
-              transition: background 0.2s ease;
-
-              &:hover {
-                background: #4a90e2; /* Warna biru saat hover */
-              }
-
-              &:active {
-                background: #357abd; /* Warna biru lebih gelap saat di-resize */
-              }
-
-              ${isResizing &&
-              css`
-                background: #357abd; /* Warna biru lebih gelap saat resize aktif */
-                opacity: 0.8;
-              `}
-            `
-          )}
-        ></div>
-      </th>
-    </Resizable>
+              background: #357abd; /* Warna biru lebih gelap saat resize aktif */
+              opacity: 0.8;
+            `}
+          `
+        )}
+      ></div>
+    </th>
   );
 };
 export const Pagination: React.FC<any> = ({

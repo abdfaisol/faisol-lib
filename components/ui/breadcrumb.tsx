@@ -33,7 +33,10 @@ const BreadcrumbItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <li
     ref={ref}
-    className={cn("inline-flex items-center gap-1.5", className)}
+    className={cn(
+      "inline-flex items-center gap-1.5 text-foreground",
+      className
+    )}
     {...props}
   />
 ));
@@ -80,7 +83,7 @@ const BreadcrumbSeparator = ({
   <li
     role="presentation"
     aria-hidden="true"
-    className={cn("[&>svg]:w-3.5 [&>svg]:h-3.5", className)}
+    className={cn("[&>svg]:w-3.5 [&>svg]:h-3.5 text-foreground", className)}
     {...props}
   >
     {children ?? <ChevronRight />}

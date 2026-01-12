@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { css } from "@emotion/css";
@@ -26,6 +25,7 @@ import {
 } from "../ui/tooltip";
 import ImageBetter from "../ui/Image";
 import { ListUI } from "../list/ListUI";
+import { Skeleton } from "../ui/Skeleton";
 import { apix } from "@/lib/utils/apix";
 import { getNumber } from "@/lib/utils/getNumber";
 import { events } from "@/lib/utils/event";
@@ -130,310 +130,140 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
       return false;
     });
   };
-  const renderTree = (items: TreeMenuItem[], depth: number = 0) => {
-    return items.map((item, index) => {
-      const hasChildren = item.children && item.children.length > 0;
-      let isActive = item.href && detectCase(currentPage, item.href);
-      let isParentActive = hasChildren && isChildActive(item.children!);
-      const [isOpen, setIsOpen] = useState(isParentActive);
-      useEffect(() => {
-        if (isParentActive) {
-          setIsOpen(true);
-        }
-      }, [isParentActive]);
-      const itemStyle = {
-        paddingLeft:
-          mini && !depth
-            ? "10px"
-            : !hasChildren && !depth
-            ? "13px"
-            : !mini
-            ? `${depth * 16}px`
-            : "0px",
-      };
-      return (
-        <React.Fragment key={item.href || item.title || index}>
-          {hasChildren ? (
-            <li className="relative ">
-              <div className="w-full flex flex-row items-center justify-center">
-                <div
-                  className={cx(
-                    mini ? "flex flex-row" : "flex flex-row flex-grow"
-                  )}
-                >
-                  {mini && !depth ? (
-                    <>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div
-                              className={classNames(
-                                "transition-all font-bold text-sidebar-label relative flex-row flex items-center cursor-pointer items-center   text-base  flex flex-row  ",
-                                isActive
-                                  ? " text-base"
-                                  : " hover:bg-card-layer hover:shadow-md hover:text-primary",
-                                mini
-                                  ? "transition-all duration-200 justify-center ml-0 rounded-lg"
-                                  : "py-2.5 px-4  rounded-md flex-grow mx-2 pr-0",
-                                !depth && !hasChildren ? "px-2" : "",
-                                css`
-                                  & > span {
-                                    white-space: wrap !important;
-                                  }
-                                `,
-                                mini
-                                  ? isParentActive
-                                    ? "bg-linear-sidebar-active text-white  font-normal  p-1 shadow-md w-[50px]"
-                                    : isActive
-                                    ? !depth
-                                      ? "bg-linear-sidebar-active text-white  font-normal  p-1 shadow-md"
-                                      : " bg-layer text-primary font-bold  p-1 "
-                                    : "text-primary bg-transparent  p-1 hover:bg-card-layer hover:shadow-md w-[50px]"
-                                  : isActive
-                                  ? !depth
-                                    ? " bg-linear-sidebar-active font-bold text-white shadow-md "
-                                    : " bg-layer  text-primary font-bold  "
-                                  : "text-white"
-                              )}
-                              onClick={() => {
-                                if (mini) {
-                                  minimaze();
-                                }
-                                setIsOpen(!isOpen);
-                              }}
-                              style={mini ? {} : itemStyle}
-                            >
-                              <div
-                                className={cx(
-                                  "flex flex-row items-center flex-grow",
-                                  mini
-                                    ? " justify-center  rounded-md "
-                                    : " px-3",
-                                  mini
-                                    ? isParentActive
-                                      ? "bg-linear-sidebar-active text-white font-bold "
-                                      : "text-primary"
-                                    : isActive
-                                    ? "font-bold "
-                                    : ""
-                                )}
-                              >
-                                {!depth ? (
-                                  <div
-                                    className={classNames(
-                                      " w-8 h-8  text-center flex flex-row items-center justify-center",
-                                      !mini ? "mr-1  p-2 " : " text-lg ",
-                                      mini
-                                        ? css`
-                                            background: transparent !important;
-                                          `
-                                        : ``
-                                    )}
-                                  >
-                                    {item.icon}
-                                  </div>
-                                ) : (
-                                  <></>
-                                )}
 
-                                {!mini ? (
-                                  <>
-                                    <div className="pl-2 flex-grow   text-xs line-clamp-2">
-                                      {item.title}
-                                    </div>
-                                    <div className="text-md px-1">
-                                      {isOpen ? (
-                                        <FaChevronUp />
-                                      ) : (
-                                        <FaChevronDown />
-                                      )}
-                                    </div>
-                                  </>
-                                ) : (
-                                  <></>
-                                )}
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent
-                            className="bg-linear-sidebar-active text-white  border border-primary shadow-md transition-all "
-                            side="right"
-                          >
-                            <p>{item.title}</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </>
-                  ) : (
-                    <>
-                      <div
-                        className={classNames(
-                          "transition-all font-bold text-sidebar-label relative flex-row flex items-center cursor-pointer items-center   text-base  flex flex-row  ",
-                          isActive
-                            ? " text-base"
-                            : " hover:bg-card-layer hover:shadow-md hover:text-primary",
-                          mini
-                            ? "transition-all duration-200 justify-center ml-0 rounded-lg"
-                            : "py-2.5 px-4  rounded-md flex-grow mx-2 pr-0",
-                          !depth && !hasChildren ? "px-2" : "",
-                          css`
-                            & > span {
-                              white-space: wrap !important;
-                            }
-                          `,
-                          mini
-                            ? isActive
-                              ? !depth
-                                ? "bg-linear-sidebar-active text-white  font-normal  p-1 shadow-md"
-                                : " bg-layer text-primary font-bold  p-1 "
-                              : "text-primary bg-transparent  p-1 hover:bg-card-layer hover:shadow-md w-[50px]"
-                            : isActive
-                            ? !depth
-                              ? " bg-linear-sidebar-active font-bold text-white shadow-md "
-                              : " bg-layer  text-primary font-bold  "
-                            : "text-sidebar-label"
-                        )}
-                        onClick={() => {
-                          if (mini) {
-                            minimaze();
-                          }
-                          setIsOpen(!isOpen);
-                        }}
-                        style={mini ? {} : itemStyle}
-                      >
-                        <div
-                          className={cx(
-                            "flex flex-row items-center flex-grow",
-                            mini ? " justify-center  rounded-md " : " px-3",
-                            mini
-                              ? isParentActive
-                                ? "bg-linear-sidebar-active text-white font-bold "
-                                : "text-primary"
-                              : isActive
-                              ? "font-bold "
-                              : ""
-                          )}
-                        >
-                          {!depth ? (
-                            <div
-                              className={classNames(
-                                " w-8 h-8  text-center flex flex-row items-center justify-center",
-                                !mini ? "mr-1  p-2 " : " text-lg ",
-                                mini
-                                  ? css`
-                                      background: transparent !important;
-                                    `
-                                  : ``
-                              )}
-                            >
-                              {item.icon}
-                            </div>
-                          ) : (
-                            <></>
-                          )}
+  const TreeItem = ({
+    item,
+    index,
+    depth,
+  }: {
+    item: TreeMenuItem;
+    index: number;
+    depth: number;
+  }) => {
+    const hasChildren = item.children && item.children.length > 0;
+    let isActive = item.href && detectCase(currentPage, item.href);
+    let isParentActive = hasChildren && isChildActive(item.children!);
+    const [isOpen, setIsOpen] = useState(isParentActive);
 
-                          {!mini ? (
-                            <>
-                              <div className="pl-2 flex-grow   text-xs line-clamp-2">
-                                {item.title}
-                              </div>
-                              <div className="text-md px-1">
-                                {isOpen ? <FaChevronUp /> : <FaChevronDown />}
-                              </div>
-                            </>
-                          ) : (
-                            <></>
-                          )}
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
+    useEffect(() => {
+      if (isParentActive) {
+        setIsOpen(true);
+      }
+    }, [isParentActive]);
 
-              <Sidebar.ItemGroup
-                className={classNames(
-                  "border-none mt-0",
-                  isOpen ? "" : "hidden",
-                  mini ? "hidden" : ""
+    const itemStyle = {
+      paddingLeft:
+        mini && !depth
+          ? "10px"
+          : !mini
+          ? depth === 0
+            ? !hasChildren
+              ? "13px"
+              : "0px"
+            : `${20 + depth * 16}px`
+          : "0px",
+    };
+
+    return (
+      <React.Fragment key={item.href || item.title || index}>
+        {hasChildren ? (
+          <li className="relative ">
+            <div className="w-full flex flex-row items-center justify-center">
+              <div
+                className={cx(
+                  mini ? "flex flex-row" : "flex flex-row flex-grow"
                 )}
               >
-                {renderTree(item.children!, depth + 1)}
-              </Sidebar.ItemGroup>
-            </li>
-          ) : (
-            <li className="relative">
-              <div className="w-full flex flex-row items-center justify-center">
-                <div
-                  className={cx(
-                    mini ? "flex flex-row" : "flex flex-row w-full"
-                  )}
-                >
-                  {mini ? (
+                {mini && !depth ? (
+                  <>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div>
-                            <SidebarLinkBetter
-                              href={item.href}
-                              onClick={() => {
-                                if (item?.href) setCurrentPage(item.href);
-                                if (typeof onClick === "function") {
-                                  onClick();
+                          <div
+                            className={classNames(
+                              "transition-all font-bold text-sidebar-label relative flex-row flex items-center cursor-pointer items-center   text-base  flex flex-row  ",
+                              isActive
+                                ? " text-base"
+                                : " hover:bg-card-layer hover:shadow-md hover:text-primary",
+                              mini
+                                ? "transition-all duration-200 justify-center ml-0 rounded-lg"
+                                : "py-2.5 px-4  rounded-md flex-grow mx-2 pr-0",
+                              !depth && !hasChildren ? "px-2" : "",
+                              css`
+                                & > span {
+                                  white-space: wrap !important;
                                 }
-                              }}
-                              className={classNames(
-                                "transition-all  font-bold relative flex-row flex items-center cursor-pointer items-center   text-base flex flex-row  ",
-                                isActive
-                                  ? " text-base"
-                                  : "hover:bg-card-layer hover:shadow-md hover:text-primary",
-                                mini
-                                  ? "transition-all duration-200 justify-center ml-0 rounded-lg"
-                                  : "py-2.5 px-4  rounded-md flex-grow mx-2",
-                                !depth && !hasChildren ? "px-2" : "",
-                                css`
-                                  & > span {
-                                    white-space: wrap !important;
-                                  }
-                                `,
-                                mini
-                                  ? isActive
-                                    ? !depth
-                                      ? "bg-linear-sidebar-active text-white  font-normal  p-1 shadow-md"
-                                      : " bg-layer text-primary font-bold  p-1 "
-                                    : "text-primary bg-transparent  p-1 hover:bg-card-layer hover:shadow-md"
+                              `,
+                              mini
+                                ? isParentActive
+                                  ? "bg-linear-sidebar-active text-white  font-normal  p-1 shadow-md w-[50px]"
                                   : isActive
                                   ? !depth
-                                    ? " bg-linear-sidebar-active font-bold text-white shadow-md"
-                                    : " bg-linear-sidebar-active text-white font-bold  "
-                                  : "text-sidebar-label"
+                                    ? "bg-linear-sidebar-active text-white  font-normal  p-1 shadow-md"
+                                    : " bg-layer text-primary font-bold  p-1 "
+                                  : "text-primary bg-transparent  p-1 hover:bg-card-layer hover:shadow-md w-[50px]"
+                                : isActive
+                                ? !depth
+                                  ? " bg-linear-sidebar-active font-bold text-white shadow-md "
+                                  : " bg-layer  text-primary font-bold  "
+                                : "text-white"
+                            )}
+                            onClick={() => {
+                              if (mini) {
+                                minimaze();
+                              }
+                              setIsOpen(!isOpen);
+                            }}
+                            style={mini ? {} : itemStyle}
+                          >
+                            <div
+                              className={cx(
+                                "flex flex-row items-center flex-grow",
+                                mini ? " justify-center  rounded-md " : " px-3",
+                                mini
+                                  ? isParentActive
+                                    ? "bg-linear-sidebar-active text-white font-bold "
+                                    : "text-primary"
+                                  : isActive
+                                  ? "font-bold "
+                                  : ""
                               )}
-                              style={mini ? {} : itemStyle} // Terapkan gaya berdasarkan depth
                             >
-                              <div className="flex flex-row items-center">
-                                {!depth ? (
-                                  <div
-                                    className={classNames(
-                                      "  text-dark-700 w-8 h-8  rounded-lg text-center flex flex-row items-center justify-center",
-                                      !mini ? "mr-1  p-2" : " text-lg"
-                                    )}
-                                  >
-                                    {item.icon}
+                              {!depth ? (
+                                <div
+                                  className={classNames(
+                                    " w-8 h-8  text-center flex flex-row items-center justify-center",
+                                    !mini ? "mr-1  p-2 " : " text-lg ",
+                                    mini
+                                      ? css`
+                                          background: transparent !important;
+                                        `
+                                      : ``
+                                  )}
+                                >
+                                  {item.icon}
+                                </div>
+                              ) : (
+                                <></>
+                              )}
+
+                              {!mini ? (
+                                <>
+                                  <div className="pl-2 flex-grow   text-xs line-clamp-2">
+                                    {item.title}
                                   </div>
-                                ) : (
-                                  <></>
-                                )}
-                                {!mini ? (
-                                  <>
-                                    <div className="pl-2 text-xs  line-clamp-1">
-                                      {item.title}
-                                    </div>
-                                  </>
-                                ) : (
-                                  <></>
-                                )}
-                              </div>
-                            </SidebarLinkBetter>
+                                  <div className="text-md px-1">
+                                    {isOpen ? (
+                                      <FaChevronUp />
+                                    ) : (
+                                      <FaChevronDown />
+                                    )}
+                                  </div>
+                                </>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
                           </div>
                         </TooltipTrigger>
                         <TooltipContent
@@ -444,23 +274,18 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                  ) : (
-                    <SidebarLinkBetter
-                      href={item.href}
-                      onClick={() => {
-                        if (item?.href) setCurrentPage(item.href);
-                        if (typeof onClick === "function") {
-                          onClick();
-                        }
-                      }}
+                  </>
+                ) : (
+                  <>
+                    <div
                       className={classNames(
-                        "transition-all  font-bold relative flex-row flex items-center cursor-pointer items-center   text-base flex flex-row  ",
+                        "transition-all font-bold text-sidebar-label relative flex-row flex items-center cursor-pointer items-center   text-base  flex flex-row  ",
                         isActive
                           ? " text-base"
-                          : "hover:bg-card-layer hover:shadow-md hover:text-primary",
+                          : " hover:bg-card-layer hover:shadow-md hover:text-primary",
                         mini
                           ? "transition-all duration-200 justify-center ml-0 rounded-lg"
-                          : "py-2.5 px-4  rounded-md flex-grow mx-2",
+                          : "py-2.5 px-4  rounded-md flex-grow mx-2 pr-0",
                         !depth && !hasChildren ? "px-2" : "",
                         css`
                           & > span {
@@ -472,21 +297,44 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
                             ? !depth
                               ? "bg-linear-sidebar-active text-white  font-normal  p-1 shadow-md"
                               : " bg-layer text-primary font-bold  p-1 "
-                            : "text-primary bg-transparent  p-1 hover:bg-card-layer hover:shadow-md"
+                            : "text-primary bg-transparent  p-1 hover:bg-card-layer hover:shadow-md w-[50px]"
                           : isActive
                           ? !depth
-                            ? " bg-linear-sidebar-active font-bold text-white shadow-md"
-                            : " bg-linear-sidebar-active text-white font-bold  "
+                            ? " bg-linear-sidebar-active font-bold text-white shadow-md "
+                            : " bg-layer  text-primary font-bold  "
                           : "text-sidebar-label"
                       )}
-                      style={mini ? {} : itemStyle} // Terapkan gaya berdasarkan depth
+                      onClick={() => {
+                        if (mini) {
+                          minimaze();
+                        }
+                        setIsOpen(!isOpen);
+                      }}
+                      style={mini ? {} : itemStyle}
                     >
-                      <div className="flex flex-row items-center">
+                      <div
+                        className={cx(
+                          "flex flex-row items-center flex-grow",
+                          mini ? " justify-center  rounded-md " : " px-3",
+                          mini
+                            ? isParentActive
+                              ? "bg-linear-sidebar-active text-white font-bold "
+                              : "text-primary"
+                            : isActive
+                            ? "font-bold "
+                            : ""
+                        )}
+                      >
                         {!depth ? (
                           <div
                             className={classNames(
-                              "  text-dark-700 w-8 h-8  rounded-lg text-center flex flex-row items-center justify-center",
-                              !mini ? "mr-1  p-2" : " text-lg"
+                              " w-8 h-8  text-center flex flex-row items-center justify-center",
+                              !mini ? "mr-1  p-2 " : " text-lg ",
+                              mini
+                                ? css`
+                                    background: transparent !important;
+                                  `
+                                : ``
                             )}
                           >
                             {item.icon}
@@ -494,23 +342,196 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
                         ) : (
                           <></>
                         )}
+
                         {!mini ? (
                           <>
-                            <div className="pl-2 text-xs  line-clamp-1">
+                            <div className="pl-2 flex-grow   text-xs line-clamp-2">
                               {item.title}
+                            </div>
+                            <div className="text-md px-1">
+                              {isOpen ? <FaChevronUp /> : <FaChevronDown />}
                             </div>
                           </>
                         ) : (
                           <></>
                         )}
                       </div>
-                    </SidebarLinkBetter>
-                  )}
-                </div>
+                    </div>
+                  </>
+                )}
               </div>
-            </li>
-          )}
-        </React.Fragment>
+            </div>
+
+            <ul
+              className={classNames(
+                "border-none mt-0 list-none",
+                isOpen ? "" : "hidden",
+                mini ? "hidden" : ""
+              )}
+            >
+              {renderTree(item.children!, depth + 1)}
+            </ul>
+          </li>
+        ) : (
+          <li className="relative">
+            <div className="w-full flex flex-row items-center justify-center">
+              <div
+                className={cx(mini ? "flex flex-row" : "flex flex-row w-full")}
+              >
+                {mini ? (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <SidebarLinkBetter
+                            href={item.href}
+                            onClick={() => {
+                              if (item?.href) setCurrentPage(item.href);
+                              if (typeof onClick === "function") {
+                                onClick();
+                              }
+                            }}
+                            className={classNames(
+                              "transition-all  font-bold relative flex-row flex items-center cursor-pointer items-center   text-base flex flex-row  ",
+                              isActive
+                                ? " text-base"
+                                : "hover:bg-card-layer hover:shadow-md hover:text-primary",
+                              mini
+                                ? "transition-all duration-200 justify-center ml-0 rounded-lg"
+                                : "py-2.5 px-4  rounded-md flex-grow mx-2",
+                              !depth && !hasChildren ? "px-2" : "",
+                              css`
+                                & > span {
+                                  white-space: wrap !important;
+                                }
+                              `,
+                              mini
+                                ? isActive
+                                  ? !depth
+                                    ? "bg-linear-sidebar-active text-white  font-normal  p-1 shadow-md"
+                                    : " bg-layer text-primary font-bold  p-1 "
+                                  : "text-primary bg-transparent  p-1 hover:bg-card-layer hover:shadow-md"
+                                : isActive
+                                ? !depth
+                                  ? " bg-linear-sidebar-active font-bold text-white shadow-md"
+                                  : " bg-linear-sidebar-active text-white font-bold  "
+                                : "text-sidebar-label"
+                            )}
+                            style={mini ? {} : itemStyle} // Terapkan gaya berdasarkan depth
+                          >
+                            <div className="flex flex-row items-center">
+                              {!depth ? (
+                                <div
+                                  className={classNames(
+                                    "  text-dark-700 w-8 h-8  rounded-lg text-center flex flex-row items-center justify-center",
+                                    !mini ? "mr-1  p-2" : " text-lg"
+                                  )}
+                                >
+                                  {item.icon}
+                                </div>
+                              ) : (
+                                <></>
+                              )}
+                              {!mini ? (
+                                <>
+                                  <div className="pl-2 text-xs  line-clamp-1">
+                                    {item.title}
+                                  </div>
+                                </>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                          </SidebarLinkBetter>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent
+                        className="bg-linear-sidebar-active text-white  border border-primary shadow-md transition-all "
+                        side="right"
+                      >
+                        <p>{item.title}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : (
+                  <SidebarLinkBetter
+                    href={item.href}
+                    onClick={() => {
+                      if (item?.href) setCurrentPage(item.href);
+                      if (typeof onClick === "function") {
+                        onClick();
+                      }
+                    }}
+                    className={classNames(
+                      "transition-all  font-bold relative flex-row flex items-center cursor-pointer items-center   text-base flex flex-row  ",
+                      isActive
+                        ? " text-base"
+                        : "hover:bg-card-layer hover:shadow-md hover:text-primary",
+                      mini
+                        ? "transition-all duration-200 justify-center ml-0 rounded-lg"
+                        : "py-2.5 px-4  rounded-md flex-grow mx-2",
+                      !depth && !hasChildren ? "px-2" : "",
+                      css`
+                        & > span {
+                          white-space: wrap !important;
+                        }
+                      `,
+                      mini
+                        ? isActive
+                          ? !depth
+                            ? "bg-linear-sidebar-active text-white  font-normal  p-1 shadow-md"
+                            : " bg-layer text-primary font-bold  p-1 "
+                          : "text-primary bg-transparent  p-1 hover:bg-card-layer hover:shadow-md"
+                        : isActive
+                        ? !depth
+                          ? " bg-linear-sidebar-active font-bold text-white shadow-md"
+                          : " bg-linear-sidebar-active text-white font-bold  "
+                        : "text-sidebar-label"
+                    )}
+                    style={mini ? {} : itemStyle} // Terapkan gaya berdasarkan depth
+                  >
+                    <div className="flex flex-row items-center">
+                      {!depth ? (
+                        <div
+                          className={classNames(
+                            "  text-dark-700 w-8 h-8  rounded-lg text-center flex flex-row items-center justify-center",
+                            !mini ? "mr-1  p-2" : " text-lg"
+                          )}
+                        >
+                          {item.icon}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                      {!mini ? (
+                        <>
+                          <div className="pl-2 text-xs  line-clamp-1">
+                            {item.title}
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </SidebarLinkBetter>
+                )}
+              </div>
+            </div>
+          </li>
+        )}
+      </React.Fragment>
+    );
+  };
+
+  const renderTree = (items: TreeMenuItem[], depth: number = 0) => {
+    return items.map((item, index) => {
+      return (
+        <TreeItem
+          key={item.href || item.title || index}
+          item={item}
+          index={index}
+          depth={depth}
+        />
       );
     });
   };
@@ -531,11 +552,10 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
       >
         <LuChevronsLeftRight />
       </div>
-      <div className={classNames("flex flex-grow lg:!block ", {})}>
-        <Sidebar
-          aria-label="Sidebar with multi-level dropdown example"
+      <div className={classNames("flex flex-col flex-grow min-h-0", {})}>
+        <div
           className={classNames(
-            "relative pt-0 rounded-none  w-full",
+            "relative pt-0 rounded-none w-full h-full flex flex-col",
             mini ? "w-20" : "md:w-64",
             css`
               > div {
@@ -552,20 +572,34 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
           <ScrollArea className="w-full h-full">
             <div className="w-full h-full relative ">
               <div className="flex h-full flex-col w-full">
-                <Sidebar.Items>
-                  <Sidebar.ItemGroup
+                <div className="flex flex-col">
+                  <ul
                     className={cx(
-                      "border-none mt-0 pt-0 md:pt-4",
+                      "border-none mt-0 pt-0 md:pt-4 list-none",
                       mini ? "flex flex-col gap-y-2" : ""
                     )}
                   >
-                    {renderTree(data)}
-                  </Sidebar.ItemGroup>
-                </Sidebar.Items>
+                    {local.ready ? (
+                      renderTree(data)
+                    ) : (
+                      <div className="flex flex-col gap-y-4 p-4">
+                        {[1, 2, 3].map((i) => (
+                          <div key={i} className="flex flex-col gap-y-2">
+                            <div className="flex flex-row gap-x-2">
+                              <Skeleton className="h-20 flex-grow rounded-xl bg-gray-200" />
+                              <Skeleton className="h-20 flex-grow rounded-xl bg-gray-200" />
+                            </div>
+                            <Skeleton className="h-20 w-full rounded-xl bg-gray-200" />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </ul>
+                </div>
               </div>
             </div>
           </ScrollArea>
-        </Sidebar>
+        </div>
       </div>
       <div className="flex flex-col gap-y-4">
         <div

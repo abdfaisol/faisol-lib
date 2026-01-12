@@ -7,7 +7,6 @@ import useEmblaCarousel, {
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "flowbite-react";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -192,43 +191,46 @@ CarouselItem.displayName = "CarouselItem";
 
 const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ className, ...props }, ref) => {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
-    <Button
+    <button
       ref={ref}
-      // variant={variant}
-      size={size}
-      className={cn("h-8 w-8 rounded-full  text-black items-center")}
+      className={cn(
+        "h-8 w-8 rounded-full border border-gray-200 bg-white flex items-center justify-center text-black hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed",
+        className
+      )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}
     >
       <ArrowLeft className="h-4 w-4" />
-    </Button>
+    </button>
   );
 });
 CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<typeof Button>
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ className, ...props }, ref) => {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
-    <Button
+    <button
       ref={ref}
-      size={size}
-      className={cn("h-8 w-8 rounded-full text-black  items-center", className)}
+      className={cn(
+        "h-8 w-8 rounded-full border border-gray-200 bg-white flex items-center justify-center text-black hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed",
+        className
+      )}
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}
     >
       <ArrowRight className="h-4 w-4" />
-    </Button>
+    </button>
   );
 });
 CarouselNext.displayName = "CarouselNext";

@@ -62,16 +62,16 @@ export const TabHeaderBetter: React.FC<any> = ({
                     }
                   }}
                   className={cx(
-                    "p-1.5 px-4  border text-sm text-gray-500 border-none mr-0 rounded-none focus-visible:ring-0  data-[state=active]:ring-0 transition-none bg-card-layer data-[state=active]:bg-white  data-[state=active]:text-primary data-[state=active]:shadow-none data-[state=active]:border-none",
+                    "p-1.5 px-4 text-sm transition-all border-none focus-visible:ring-0 data-[state=active]:ring-0",
+                    "bg-transparent text-gray-500 hover:bg-gray-300",
+                    "data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm",
                     idx === 0
                       ? "slanted-edge data-[state=active]:pr-8 rounded-tl-sm"
-                      : "parallelogram pr-8 data-[state=active]:pl-8",
-                    !idx ? "" : idx++ === local.data.length ? "" : ""
+                      : "parallelogram pr-8 data-[state=active]:pl-8"
                   )}
                   key={onValue(e)}
                 >
                   {onLabel(e)}
-                  <div className="triangle"></div>
                 </TabsTrigger>
               );
             })}

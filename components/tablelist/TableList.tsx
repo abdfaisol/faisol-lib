@@ -11,7 +11,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
-import { Button, Table } from "flowbite-react";
 import { HiChevronLeft, HiChevronRight, HiPlus } from "react-icons/hi";
 import { useLocal } from "@/lib/utils/use-local";
 import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa6";
@@ -610,12 +609,12 @@ export const TableList = <T extends object>({
                   ) : (
                     <>
                       <Link href={"/new"}>
-                        <Button className="bg-primary">
+                        <button className="bg-primary text-white rounded-lg px-4 py-2 hover:bg-primary/90 transition-colors">
                           <div className="flex items-center gap-x-0.5">
                             <HiPlus className="text-xl" />
                             <span className="capitalize">Add {name}</span>
                           </div>
-                        </Button>
+                        </button>
                       </Link>
                     </>
                   )}
@@ -795,7 +794,7 @@ export const TableList = <T extends object>({
           <div className="overflow-auto relative flex-grow flex-row">
             <div className="tablelist absolute top-0 left-0 inline-block flex-grow w-full h-full align-middle">
               <div className="relative">
-                <Table
+                <table
                   className={cx(
                     "min-w-full divide-y divide-gray-200 table-bg",
                     css`
@@ -1020,12 +1019,12 @@ export const TableList = <T extends object>({
                     <></>
                   )}
 
-                  <Table.Body className="divide-y border-none ">
+                  <tbody className="divide-y border-none ">
                     {table.getRowModel().rows.map((row, idx) => {
                       const fm_row =
                         mode === "form" ? local.dataForm?.[idx] : null;
                       return (
-                        <Table.Row
+                        <tr
                           key={row.id}
                           className={cx(
                             disabledHoverRow ? "" : "hover:bg-gray-100",
@@ -1067,7 +1066,7 @@ export const TableList = <T extends object>({
                                     cell.getContext()
                                   );
                             return (
-                              <Table.Cell
+                              <td
                                 className={cx(
                                   "text-md px-2  py-1  whitespace-nowrap text-gray-900 items-start",
                                   name === "select"
@@ -1079,14 +1078,14 @@ export const TableList = <T extends object>({
                                 key={cell.id}
                               >
                                 {renderData}
-                              </Table.Cell>
+                              </td>
                             );
                           })}
-                        </Table.Row>
+                        </tr>
                       );
                     })}
-                  </Table.Body>
-                </Table>
+                  </tbody>
+                </table>
               </div>
             </div>
             {!hiddenNoRow && !table.getRowModel().rows?.length && (

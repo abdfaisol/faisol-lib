@@ -1,6 +1,12 @@
 "use client";
 import React, { FC } from "react";
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "../ui/dropdown-menu";
 import {
   HiArchive,
   HiBell,
@@ -20,7 +26,7 @@ import { get_user } from "@/lib/utils/get_user";
 import api from "@/lib/utils/axios";
 const NavFlow: React.FC<any> = ({ minimaze }) => {
   return (
-    <Navbar fluid className="bg-transparent pt-0 pr-6 pb-0">
+    <nav className="bg-transparent pt-0 pr-6 pb-0 flex flex-wrap items-center justify-between mx-auto px-4 py-2.5">
       <div className="w-full p-1 lg:px-5 lg:pl-3  rounded rounded-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center"></div>
@@ -35,27 +41,27 @@ const NavFlow: React.FC<any> = ({ minimaze }) => {
           </div>
         </div>
       </div>
-    </Navbar>
+    </nav>
   );
 };
 
 const NotificationBellDropdown: FC = function () {
   return (
-    <Dropdown
-      arrowIcon={false}
-      inline
-      label={
-        <span className="rounded-lg p-2 hover:bg-gray-100 ">
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="rounded-lg p-2 hover:bg-gray-100 flex items-center justify-center">
           <span className="sr-only">Notifications</span>
-          <HiBell className="text-2xl text-gray-500 hover:text-gray-900  " />
-        </span>
-      }
-    >
-      <div className="max-w-[24rem]">
+          <HiBell className="text-2xl text-gray-500 hover:text-gray-900" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-[24rem] p-0 overflow-hidden"
+        align="end"
+      >
         <div className="block rounded-t-xl bg-gray-50 py-2 px-4 text-center text-base font-medium text-gray-700">
           Notifications
         </div>
-        <div>
+        <div className="max-h-[300px] overflow-y-auto">
           <a
             href="#"
             className="flex border-y py-3 px-4 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
@@ -204,8 +210,8 @@ const NotificationBellDropdown: FC = function () {
             <span>View all</span>
           </div>
         </a>
-      </div>
-    </Dropdown>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
@@ -285,138 +291,143 @@ const NewVideoIcon: FC = function () {
 
 const AppDrawerDropdown: FC = function () {
   return (
-    <Dropdown
-      arrowIcon={false}
-      inline
-      label={
-        <span className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center">
           <span className="sr-only">Apps</span>
-          <HiViewGrid className="text-2xl text-gray-500 hover:text-gray-900  dark:hover:text-white" />
-        </span>
-      }
-    >
-      <div className="block rounded-t-lg border-b bg-gray-50 py-2 px-4 text-center text-base font-medium text-gray-700 dark:border-b-gray-600 dark:bg-gray-700 ">
-        Apps
-      </div>
-      <div className="grid grid-cols-3 gap-4 p-4">
-        <a
-          href="#"
-          className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
-        >
-          <HiShoppingBag className="mx-auto mb-1 h-7 w-7 text-gray-500 " />
-          <div className="text-md font-medium text-gray-900 ">Sales</div>
-        </a>
-        <a
-          href="#"
-          className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
-        >
-          <HiUsers className="mx-auto mb-1 h-7 w-7 text-gray-500 " />
-          <div className="text-md font-medium text-gray-900 ">Users</div>
-        </a>
-        <a
-          href="#"
-          className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
-        >
-          <HiInbox className="mx-auto mb-1 h-7 w-7 text-gray-500 " />
-          <div className="text-md font-medium text-gray-900 ">Inbox</div>
-        </a>
-        <a
-          href="#"
-          className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
-        >
-          <HiUserCircle className="mx-auto mb-1 h-7 w-7 text-gray-500 " />
-          <div className="text-md font-medium text-gray-900 ">Profile</div>
-        </a>
-        <a
-          href="#"
-          className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
-        >
-          <HiCog className="mx-auto mb-1 h-7 w-7 text-gray-500 " />
-          <div className="text-md font-medium text-gray-900 ">Settings</div>
-        </a>
-        <a
-          href="#"
-          className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
-        >
-          <HiArchive className="mx-auto mb-1 h-7 w-7 text-gray-500 " />
-          <div className="text-md font-medium text-gray-900 ">Products</div>
-        </a>
-        <a
-          href="#"
-          className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
-        >
-          <HiCurrencyDollar className="mx-auto mb-1 h-7 w-7 text-gray-500 " />
-          <div className="text-md font-medium text-gray-900 ">Pricing</div>
-        </a>
-        <a
-          href="#"
-          className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
-        >
-          <HiOutlineTicket className="mx-auto mb-1 h-7 w-7 text-gray-500 " />
-          <div className="text-md font-medium text-gray-900 ">Billing</div>
-        </a>
-        <a
-          href="#"
-          className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
-        >
-          <HiLogout className="mx-auto mb-1 h-7 w-7 text-gray-500 " />
-          <div className="text-md font-medium text-gray-900 ">Logout</div>
-        </a>
-      </div>
-    </Dropdown>
+          <HiViewGrid className="text-2xl text-gray-500 hover:text-gray-900 dark:hover:text-white" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-80 p-0" align="end">
+        <div className="block rounded-t-lg border-b bg-gray-50 py-2 px-4 text-center text-base font-medium text-gray-700 dark:border-b-gray-600 dark:bg-gray-700">
+          Apps
+        </div>
+        <div className="grid grid-cols-3 gap-4 p-4">
+          <a
+            href="#"
+            className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
+            <HiShoppingBag className="mx-auto mb-1 h-7 w-7 text-gray-500" />
+            <div className="text-md font-medium text-gray-900">Sales</div>
+          </a>
+          <a
+            href="#"
+            className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
+            <HiUsers className="mx-auto mb-1 h-7 w-7 text-gray-500" />
+            <div className="text-md font-medium text-gray-900">Users</div>
+          </a>
+          <a
+            href="#"
+            className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
+            <HiInbox className="mx-auto mb-1 h-7 w-7 text-gray-500" />
+            <div className="text-md font-medium text-gray-900">Inbox</div>
+          </a>
+          <a
+            href="#"
+            className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
+            <HiUserCircle className="mx-auto mb-1 h-7 w-7 text-gray-500" />
+            <div className="text-md font-medium text-gray-900">Profile</div>
+          </a>
+          <a
+            href="#"
+            className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
+            <HiCog className="mx-auto mb-1 h-7 w-7 text-gray-500" />
+            <div className="text-md font-medium text-gray-900">Settings</div>
+          </a>
+          <a
+            href="#"
+            className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
+            <HiArchive className="mx-auto mb-1 h-7 w-7 text-gray-500" />
+            <div className="text-md font-medium text-gray-900">Products</div>
+          </a>
+          <a
+            href="#"
+            className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
+            <HiCurrencyDollar className="mx-auto mb-1 h-7 w-7 text-gray-500" />
+            <div className="text-md font-medium text-gray-900">Pricing</div>
+          </a>
+          <a
+            href="#"
+            className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
+            <HiOutlineTicket className="mx-auto mb-1 h-7 w-7 text-gray-500" />
+            <div className="text-md font-medium text-gray-900">Billing</div>
+          </a>
+          <a
+            href="#"
+            className="block rounded-lg p-4 text-center hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
+            <HiLogout className="mx-auto mb-1 h-7 w-7 text-gray-500" />
+            <div className="text-md font-medium text-gray-900">Logout</div>
+          </a>
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
 const UserDropdown: FC = function () {
   return (
-    <Dropdown
-      arrowIcon={false}
-      inline
-      label={
-        <div className="flex flex-row justify-center">
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="flex flex-row justify-center items-center gap-x-2 focus:outline-none">
           <div className="flex flex-row items-center flex-grow">
             <div className="border-l border-gray-200 px-2 h-full flex items-end justify-center flex-col text-xs max-w-[100px]">
-              <div>
+              <div className="text-gray-900">
                 {get_user("employee.name") ? get_user("employee.name") : "-"}
               </div>
             </div>
           </div>
-          <Avatar alt="" img={siteurl("/dog.jpg")} rounded size="sm" />
+          <img
+            src={siteurl("/dog.jpg")}
+            alt="User"
+            className="w-8 h-8 rounded-full"
+          />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56" align="end">
+        <div className="px-2 py-1.5">
+          <span className="block text-sm font-semibold text-gray-900">
+            {get_user("employee.name") ? get_user("employee.name") : "-"}
+          </span>
+          <span className="block truncate text-xs text-gray-500">
+            {get_user("employee.email") ? get_user("employee.email") : "-"}
+          </span>
         </div>
-      }
-    >
-      <Dropdown.Header>
-        <span className="block text-md">
-          {get_user("employee.name") ? get_user("employee.name") : "-"}
-        </span>
-        <span className="block truncate text-md font-medium">
-          {get_user("employee.email") ? get_user("employee.email") : "-"}
-        </span>
-      </Dropdown.Header>
-      <Dropdown.Item
-        onClick={() => {
-          if (typeof window === "object")
-            navigate(
-              `${process.env.NEXT_PUBLIC_API_PORTAL}/choose-roles?state=${process.env.NEXT_PUBLIC_NAME}`
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => {
+            if (typeof window === "object")
+              navigate(
+                `${process.env.NEXT_PUBLIC_API_PORTAL}/choose-roles?state=${process.env.NEXT_PUBLIC_NAME}`
+              );
+          }}
+        >
+          Switch Role
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="cursor-pointer text-red-600 focus:text-red-600"
+          onClick={async () => {
+            await api.delete(
+              process.env.NEXT_PUBLIC_BASE_URL + "/api/destroy-cookies"
             );
-        }}
-      >
-        Switch Role
-      </Dropdown.Item>
-      <Dropdown.Divider />
-      <Dropdown.Item
-        onClick={async () => {
-          await api.delete(
-            process.env.NEXT_PUBLIC_BASE_URL + "/api/destroy-cookies"
-          );
-          localStorage.removeItem("user");
-          if (typeof window === "object")
-            navigate(`${process.env.NEXT_PUBLIC_API_PORTAL}/logout`);
-        }}
-      >
-        Sign out
-      </Dropdown.Item>
-    </Dropdown>
+            localStorage.removeItem("user");
+            if (typeof window === "object")
+              navigate(`${process.env.NEXT_PUBLIC_API_PORTAL}/logout`);
+          }}
+        >
+          Sign out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
