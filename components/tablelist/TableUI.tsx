@@ -202,8 +202,8 @@ export const TableUI = <T extends object>({
                       </span>
                     </div>
                     <div className="flex items-center gap-2 italic text-xs font-medium text-purple-400">
-                      <div className="h-2 w-2 rounded-full bg-purple-400 animate-pulse"></div>
-                      Powered by AI Assistant
+                      {/* <div className="h-2 w-2 rounded-full bg-purple-400 animate-pulse"></div>
+                      Powered by AI Assistant */}
                     </div>
                   </div>
                   <iframe
