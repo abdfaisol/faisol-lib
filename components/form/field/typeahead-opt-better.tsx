@@ -267,7 +267,6 @@ export const TypeaheadOptionsBetter: FC<{
                   typeof onLoad === "function"
                     ? await onLoad({ ...param, search: local.search })
                     : onLoad;
-                console.log({ result });
                 return result;
               }}
               onCount={async (params: any) => {

@@ -71,6 +71,7 @@ export interface FieldProps {
   search?: "api" | "local";
   visibleLabel?: boolean;
   autoRefresh?: boolean;
+  isDirectUpload?: boolean;
   forceDisabled?: boolean;
   description?: string | (() => any);
   styleField?: string | null;
@@ -116,6 +117,7 @@ export const Field: React.FC<FieldProps> = ({
   valueChecked,
   mode,
   labelSingleCheckbox,
+  isDirectUpload,
 }) => {
   let result = null;
   const field = useLocal({
@@ -304,6 +306,7 @@ export const Field: React.FC<FieldProps> = ({
               <>
                 <TypeUpload
                   fm={fm}
+                  isDirectUpload={isDirectUpload}
                   name={name}
                   on_change={onChange}
                   mode={"upload"}

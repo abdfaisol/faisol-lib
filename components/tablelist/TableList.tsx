@@ -362,7 +362,6 @@ export const TableList = <T extends object>({
             pagination: e?.pagination,
             search: e?.search,
           }));
-        console.log({ result });
         local.fieldFilter = result;
         local.render();
       }

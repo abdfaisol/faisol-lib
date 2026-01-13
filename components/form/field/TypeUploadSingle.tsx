@@ -3,15 +3,16 @@ import { Loader2, Paperclip, Trash2, Upload } from "lucide-react";
 import { ChangeEvent, FC, useEffect } from "react";
 import * as XLSX from "xlsx";
 import { useLocal } from "@/lib/utils/use-local";
-import { siteurl } from "@/lib/utils/siteurl";
+import { apix } from "@/lib/utils/apix";
 import { FilePreview } from "./FilePreview";
 
 export const FieldUploadSingle: FC<{
   field: any;
   fm: any;
   on_change: (e: any) => void | Promise<void>;
+  isDirectUpload?: boolean;
   mode?: "upload" | "import";
-}> = ({ field, fm, on_change, mode }) => {
+}> = ({ field, fm, on_change, mode, isDirectUpload }) => {
   const styling = "mini";
   const disabled = field?.disabled || false;
   let value: any = fm.data?.[field.name];
@@ -76,66 +77,89 @@ export const FieldUploadSingle: FC<{
         }
       }
     } else if (file) {
-      fm.data[field.name] = file;
-      fm.render();
-      input.fase = "preview";
-      input.preview = `${URL.createObjectURL(file)}.${file.name
-        .split(".")
-        .pop()}`;
-      input.isLocal = true;
-      input.render();
-      if (typeof on_change === "function") {
-        await on_change({});
-      }
-      return;
-      const formData = new FormData();
-      formData.append("file", file);
-
-      let url = siteurl("/_upload");
-      if (
-        location.hostname === "prasi.avolut.com" ||
-        location.host === "localhost:4550"
-      ) {
-        const newurl = new URL(location.href);
-        newurl.pathname = `/_proxy/${url}`;
-        url = newurl.toString();
-      }
-      input.fase = "upload";
-      input.render();
-      try {
-        const response = await fetch(url, {
-          method: "POST",
-          body: formData,
-        });
-
-        if (response.ok) {
-          const contentType: any = response.headers.get("content-type");
-          let result;
-          if (contentType.includes("application/json")) {
-            result = await response.json();
-          } else if (contentType.includes("text/plain")) {
-            result = await response.text();
-          } else {
-            result = await response.blob();
-          }
-          if (Array.isArray(result)) {
-            fm.data[field.name] = `_file${get(result, "[0]")}`;
-            fm.render();
-            setTimeout(() => {
-              input.fase = "preview";
-              input.render();
-            }, 1000);
-          } else {
-            input.fase = "start";
-            input.render();
-            alert("Error upload");
-          }
-        } else {
-        }
-      } catch (ex) {
-        input.fase = "start";
+      if (isDirectUpload) {
+        input.fase = "upload";
         input.render();
-        alert("Error upload");
+        try {
+          const result = await apix({
+            port: "recruitment",
+            value: "data.data.path",
+            path: "/api/uploads/file",
+            method: "post",
+            type: "form",
+            data: {
+              file: file,
+            },
+          });
+          console.log("Upload result", result);
+
+          // Normalize result into a usable value for fm.data[field.name]
+          if (result && typeof result === "object" && !Array.isArray(result)) {
+            // prefer API shape: { url, filename, size }
+            const urlVal =
+              get(result, "url") ||
+              get(result, "path") ||
+              get(result, "file") ||
+              get(result, "filename");
+            if (urlVal) {
+              fm.data[field.name] = urlVal;
+              input.fase = "preview";
+              input.preview = urlVal;
+              input.isLocal = false;
+            } else {
+              // fallback to storing the whole object and show local preview
+              fm.data[field.name] = result;
+              input.fase = "preview";
+              input.preview = `${URL.createObjectURL(file)}.${file.name
+                .split(".")
+                .pop()}`;
+              input.isLocal = true;
+            }
+          } else if (typeof result === "string") {
+            // server returned a string (likely a URL)
+            fm.data[field.name] = result;
+            input.fase = "preview";
+            input.preview = result;
+            input.isLocal = false;
+          } else if (Array.isArray(result) && result.length > 0) {
+            // older behavior: server returned an array with path fragments
+            fm.data[field.name] = `_file${get(result, "[0]")}`;
+            input.fase = "preview";
+            input.preview = `${URL.createObjectURL(file)}.${file.name
+              .split(".")
+              .pop()}`;
+            input.isLocal = true;
+          } else {
+            // unknown shape: store raw result and show local preview
+            fm.data[field.name] = result;
+            input.fase = "preview";
+            input.preview = `${URL.createObjectURL(file)}.${file.name
+              .split(".")
+              .pop()}`;
+            input.isLocal = true;
+          }
+
+          fm.render();
+          input.render();
+
+          if (typeof on_change === "function") await on_change({});
+        } catch (err: any) {
+          console.error("Upload error", err);
+          alert(`Upload failed: ${String(err?.message || err)}`);
+        }
+      } else {
+        fm.data[field.name] = file;
+        fm.render();
+        input.fase = "preview";
+        input.preview = `${URL.createObjectURL(file)}.${file.name
+          .split(".")
+          .pop()}`;
+        input.isLocal = true;
+        input.render();
+        if (typeof on_change === "function") {
+          await on_change({});
+        }
+        return;
       }
     }
     if (input.ref) {
