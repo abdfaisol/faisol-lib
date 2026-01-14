@@ -29,6 +29,7 @@ export const Form: React.FC<any> = ({
   className,
   onInit,
   afterLoad,
+  onError,
   toastMessage,
 }) => {
   const local = useLocal({
@@ -185,6 +186,9 @@ export const Form: React.FC<any> = ({
           }, 100);
         }, 100);
       } catch (ex: any) {
+        if (typeof onError === "function") {
+          onError(local);
+        }
         const msg = get(ex, "response.data.meta.message") || ex.message;
         setTimeout(() => {
           toast.dismiss();

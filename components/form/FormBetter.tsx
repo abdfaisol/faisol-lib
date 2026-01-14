@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import get from "lodash.get";
 
 export const FormBetter: React.FC<any> = ({
+  onError,
   children,
   header,
   onTitle,
@@ -46,6 +47,7 @@ export const FormBetter: React.FC<any> = ({
                   children,
                   header,
                   onTitle,
+                  onError,
                   onLoad: async () => {
                     try {
                       const res = await onLoad();
@@ -97,6 +99,7 @@ export const FormBetter: React.FC<any> = ({
                     children,
                     header,
                     onTitle,
+                    onError,
                     onLoad: async () => {
                       try {
                         const res = await onLoad();
