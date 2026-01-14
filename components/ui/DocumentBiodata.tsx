@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
 });
 // Create Document Component
 export const DocumentBiodata: FC<any> = ({ data, onRender }) => {
-  console.log({ data });
   return (
     <PDFViewer className="flex-grow w-full">
       <Document

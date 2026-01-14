@@ -16,10 +16,8 @@ export const getAccess = (keys: string, data: any[]) => {
 
 export const access = (keys: string) => {
   const data = globalThis.userRole;
-  console.log("data access", data);
   if (!Array.isArray(data) || !data?.length) return false;
   for (const role of data) {
-    console.log(role.permissions);
     const permissionExists = role.permissions.some(
       (permission: any) => get(permission, "name") === keys
     );

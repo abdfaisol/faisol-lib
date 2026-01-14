@@ -34,7 +34,6 @@ export const userToken = async () => {
           value: "data.data",
           path: "/api/users/me",
         });
-        console.log(user);
         if (user) {
           let profile = null;
           try {
@@ -125,7 +124,6 @@ export const userToken = async () => {
   //         `${process.env.NEXT_PUBLIC_API_PORTAL}/api/users/me`
   //       );
   //       const us = user.data.data;
-  //       console.log({ us });
   //       if (us) {
   //         localStorage.setItem("user", JSON.stringify(user.data.data));
   //         const roles = await userRoleMe();

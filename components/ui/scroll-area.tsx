@@ -16,9 +16,6 @@ const ScrollArea = React.forwardRef<
   // Effect untuk memaksa ScrollArea mengupdate layout saat reload berubah
   // React.useEffect(() => {
   //   if (viewportRef?.current && childPort?.current) {
-  //     console.log(viewportRef.current);
-
-  //     console.log(childPort.current);
   //     // viewportRef.current.style.height = "auto"; // Reset height
   //     // requestAnimationFrame(() => {
   //     //   viewportRef.current?.scrollHeight; // Trigger repaint

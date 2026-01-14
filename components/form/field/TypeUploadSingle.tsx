@@ -91,7 +91,6 @@ export const FieldUploadSingle: FC<{
               file: file,
             },
           });
-          console.log("Upload result", result);
 
           // Normalize result into a usable value for fm.data[field.name]
           if (result && typeof result === "object" && !Array.isArray(result)) {

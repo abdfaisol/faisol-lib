@@ -127,7 +127,6 @@ export function TableEditBetterLine({
                     search="local"
                     pagination={false}
                     onChange={(value: any) => {
-                      console.log({ value });
                       updateRow(idx, "job_level_id", value?.id);
                       updateRow(idx, "job_level", value?.data);
                     }}
@@ -186,7 +185,6 @@ export function TableEditBetterLine({
                       fm.render();
                     }}
                     onLoad={async (param: any) => {
-                      console.log({ row });
                       if (!row.job_level_id) return [];
                       const params = await events("onload-param", {
                         ...param,
@@ -200,7 +198,6 @@ export function TableEditBetterLine({
                       });
                       if (documentLines?.length) {
                         let ids = documentLines.map((e: any) => e.job_id);
-                        console.log({ ids });
                         ids = ids.filter((e: any) => e !== row?.job_id);
                         const result = res.filter(
                           (e: any) => !ids.includes(e.id)

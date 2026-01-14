@@ -126,12 +126,6 @@ export const Form: React.FC<any> = ({
                         "Please fill out this field.";
                       isError = true;
                     }
-
-                    console.log({
-                      keySub,
-                      data: get(local.data, `${keys}[${index}]`),
-                      val,
-                    });
                   });
 
                   item.error = errorChilds;

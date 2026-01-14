@@ -74,7 +74,6 @@ export const TypeaheadOptionsBetter: FC<{
   const handleSearch = useCallback(
     debouncedHandler(() => {
       // local.refresh();
-      console.log(local.list);
     }, 1000),
     []
   );

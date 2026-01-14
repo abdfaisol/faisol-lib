@@ -18,7 +18,6 @@ export const flattenObject = (
           // Rekursi jika elemen adalah object
           flattenObject(item, `${newKey}`, result, `${index}`);
         } else {
-          console.log(`${newKey}.${key}[${index}]`);
           // Simpan value langsung jika elemen bukan object
           result[`${newKey}.${key}[${index}]`] = item;
         }

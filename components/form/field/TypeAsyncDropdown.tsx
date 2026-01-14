@@ -296,7 +296,6 @@ export const TypeAsyncDropdown: React.FC<any> = ({
   const customFilterOption = (option: any, rawInput: any) => {
     // option.data berisi data opsi, misalnya label dan value
     // rawInput adalah string yang diketik pengguna
-    console.log(option, rawInput);
     return true;
   };
   const increaseUniq = (uniq: number) => uniq + 1;

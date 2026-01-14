@@ -433,10 +433,8 @@ const Days: React.FC<Props> = ({
       const card = getNumber(rect?.width);
       const cardHeight = getNumber(get(markRef, "current.clientHeight"));
       const heightItem = 20; // perkiraan
-      console.log(card);
       setWidth(card);
       setHeight(cardHeight);
-      console.log(Math.floor(cardHeight / heightItem));
       setMaxItem(Math.floor(cardHeight / heightItem));
       setHeightItem(20);
       // setMaxItem

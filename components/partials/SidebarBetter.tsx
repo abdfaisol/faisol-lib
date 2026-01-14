@@ -81,7 +81,6 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
   }, []);
   useEffect(() => {
     const run = async () => {
-      console.log("NOTIFICATION COUNT");
       const count: any = await apix({
         port: "notification",
         value: "data.data",
@@ -90,7 +89,6 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
         )}&application=${process.env.NEXT_PUBLIC_NOTIFICATION_TYPE}`,
         method: "get",
       });
-      console.log(count);
       setNotificationCount(count);
       const wsCount = new WebSocket(
         `wss://${
@@ -99,22 +97,16 @@ const SidebarBetterTree: React.FC<TreeMenuProps> = ({
           process.env.NEXT_PUBLIC_NOTIFICATION_TYPE
         }`
       );
-      wsCount.onopen = () => {
-        console.log("WebSocket (count) connection established");
-      };
+      wsCount.onopen = () => {};
       wsCount.onmessage = (event) => {
-        console.log(event);
         const data = JSON.parse(event.data);
-        console.log("WebSocket (count) message received:", data);
         setNotificationCount(data?.unread_count);
         // setNotifications((prev) => [data.notification, ...prev]);
       };
       wsCount.onerror = (error) => {
         console.error("WebSocket (count) error:", error);
       };
-      wsCount.onclose = () => {
-        console.log("WebSocket (count) connection closed");
-      };
+      wsCount.onclose = () => {};
       return () => {
         if (wsCount.readyState === WebSocket.OPEN) {
           wsCount.close();
